@@ -63,17 +63,13 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
     // Auto-show preview when minimum data is collected
     useEffect(() => {
-        const hasMinimumData = resumeData.personalInfo?.name &&
-            resumeData.personalInfo?.phone &&
-            (resumeData.skills?.length > 0 || resumeData.experience?.length > 0);
+        const hasMinimumData = resumeData.personalInfo?.name && resumeData.personalInfo?.phone;
         
         if (hasMinimumData) {
             console.log('Auto-showing preview - minimum data collected:', resumeData);
             setTimeout(() => onShowPreview(), 100); // Small delay to ensure state is updated
         }
-    }, [resumeData.personalInfo?.name, resumeData.personalInfo?.phone, resumeData.skills?.length, resumeData.experience?.length]);
-
-    // Initialize Speech Recognition
+    }, [resumeData.personalInfo?.name, resumeData.personalInfo?.phone, resumeData.skills?.length, resumeData.experience?.length]);    // Initialize Speech Recognition
     useEffect(() => {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
