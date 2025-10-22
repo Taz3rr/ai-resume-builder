@@ -525,37 +525,38 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
     return (
         <div className="flex flex-col h-[600px]">
-            <div className="flex gap-2 mb-3">
+            <div className="flex gap-1.5 sm:gap-2 mb-3">
                 <button
                     onClick={fillSampleData}
-                    className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
                 >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
-                    {t.fillSample}
+                    <span className="hidden sm:inline">{t.fillSample}</span>
+                    <span className="sm:hidden">Fill</span>
                 </button>
                 <button
                     onClick={() => setShowEditModal(true)}
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
                 >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    {language === 'hi' && 'संपादित करें'}
-                    {language === 'or' && 'ସଂପାଦନ କରନ୍ତୁ'}
-                    {language === 'mr' && 'संपादित करा'}
+                    {language === 'hi' && 'संपादित'}
+                    {language === 'or' && 'ସଂପାଦନ'}
+                    {language === 'mr' && 'संपादित'}
                     {language === 'ta' && 'திருத்து'}
                     {language === 'te' && 'సవరించు'}
                     {language === 'bn' && 'সম্পাদনা'}
-                    {language === 'gu' && 'સંપાદિત કરો'}
+                    {language === 'gu' && 'સંપાદિત'}
                     {language === 'kn' && 'ಸಂಪಾದಿಸು'}
                     {language === 'pa' && 'ਸੰਪਾਦਿਤ'}
                     {language === 'en' && 'Edit'}
                 </button>
                 <button
                     onClick={resetResume}
-                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
                 >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -597,15 +598,15 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 </div>
             )}
 
-            <div className="flex-1 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-lg">
+            <div className="flex-1 overflow-y-auto mb-4 space-y-3 p-3 sm:p-4 bg-gray-50 rounded-lg">
                 {messages.map((msg, idx) => (
                     <div
                         key={idx}
                         className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'} animate-slideUp`}
                     >
-                        <div className="flex items-start gap-2 max-w-[80%]">
+                        <div className="flex items-start gap-2 max-w-[85%] sm:max-w-[80%]">
                             <div
-                                className={`px-4 py-3 rounded-lg ${msg.type === 'user'
+                                className={`px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base break-words ${msg.type === 'user'
                                     ? 'bg-indigo-600 text-white'
                                     : 'bg-white text-gray-800 shadow-md'
                                     }`}
@@ -615,18 +616,18 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                             {msg.type === 'bot' && (
                                 <button
                                     onClick={() => speakingMessageId === idx ? stopSpeaking() : speakText(msg.text, idx)}
-                                    className={`p-2 rounded-full transition-all ${speakingMessageId === idx
+                                    className={`p-1.5 sm:p-2 rounded-full flex-shrink-0 transition-all ${speakingMessageId === idx
                                         ? 'bg-red-500 text-white animate-pulse'
                                         : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'
                                         }`}
                                     title={speakingMessageId === idx ? 'Stop' : 'Listen'}
                                 >
                                     {speakingMessageId === idx ? (
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
                                         </svg>
                                     ) : (
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                                         </svg>
                                     )}
@@ -637,7 +638,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 ))}
                 {isProcessing && (
                     <div className="flex justify-start">
-                        <div className="px-4 py-3 rounded-lg bg-white text-gray-800 shadow-md">
+                        <div className="px-3 py-2 sm:px-4 sm:py-3 rounded-lg bg-white text-gray-800 shadow-md text-sm sm:text-base">
                             <div className="flex items-center gap-2">
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
                                 <span>Thinking...</span>
@@ -652,27 +653,27 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 <button
                     onClick={startVoiceInput}
                     disabled={isListening || isProcessing}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${isListening
+                    className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-colors text-sm sm:text-base flex-shrink-0 ${isListening
                         ? 'bg-red-500 text-white animate-pulse'
                         : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
                         }`}
                     title={t.voiceInput}
                 >
-                    {isListening ? '🔴 Listening...' : '🎤'}
+                    {isListening ? '🔴' : '🎤'}
                 </button>
                 <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder={isConversationComplete ? 'Conversation complete' : (isProcessing ? 'Please wait...' : t.typeHere)}
+                    placeholder={isConversationComplete ? 'Done' : (isProcessing ? 'Wait...' : t.typeHere)}
                     disabled={isProcessing || isConversationComplete}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
+                    className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
                 />
                 <button
                     onClick={handleSend}
                     disabled={isProcessing || isConversationComplete}
-                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:bg-gray-400"
+                    className="px-4 py-2 sm:px-6 sm:py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:bg-gray-400 flex-shrink-0 text-sm sm:text-base"
                 >
                     {t.send}
                 </button>
