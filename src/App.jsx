@@ -9,17 +9,20 @@ function App() {
     const [language, setLanguage] = useState('en');
     const [languageSelected, setLanguageSelected] = useState(false);
     const [showApp, setShowApp] = useState(false);
-    const [resumeData, setResumeData] = useState(() => {
-        const saved = localStorage.getItem('resumeData');
-        return saved ? JSON.parse(saved) : {
-            personalInfo: {},
-            skills: [],
-            experience: [],
-            certifications: [],
-            education: []
-        };
+    const [resumeData, setResumeData] = useState({
+        personalInfo: {},
+        skills: [],
+        experience: [],
+        certifications: [],
+        education: []
     });
     const [showPreview, setShowPreview] = useState(false);
+
+    // Auto-reset: Clear localStorage on fresh session start
+    useEffect(() => {
+        localStorage.removeItem('resumeData');
+        console.log('Session started: localStorage cleared for fresh resume');
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('resumeData', JSON.stringify(resumeData));

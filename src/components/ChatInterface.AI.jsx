@@ -12,6 +12,9 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
     const [speakingMessageId, setSpeakingMessageId] = useState(null);
     const [isAIMode, setIsAIMode] = useState(true); // Try AI first
     const [isProcessing, setIsProcessing] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editField, setEditField] = useState(null);
+    const [editValue, setEditValue] = useState('');
     const messagesEndRef = useRef(null);
     const recognitionRef = useRef(null);
 
@@ -400,6 +403,83 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
         }
     };
 
+    const openEditModal = (field) => {
+        setEditField(field);
+        // Get current value
+        let currentValue = '';
+        if (field === 'name') currentValue = resumeData.personalInfo?.name || '';
+        else if (field === 'phone') currentValue = resumeData.personalInfo?.phone || '';
+        else if (field === 'email') currentValue = resumeData.personalInfo?.email || '';
+        else if (field === 'address') currentValue = resumeData.personalInfo?.address || '';
+        else if (field === 'trade') currentValue = resumeData.personalInfo?.trade || '';
+        else if (field === 'skills') currentValue = resumeData.skills?.join(', ') || '';
+        else if (field === 'experience') currentValue = resumeData.experience?.[0]?.description || '';
+        else if (field === 'certifications') currentValue = resumeData.certifications?.join(', ') || '';
+        else if (field === 'education') currentValue = resumeData.education?.[0]?.description || '';
+
+        setEditValue(currentValue);
+        setShowEditModal(true);
+    };
+
+    const saveEdit = () => {
+        if (!editValue.trim()) {
+            alert('Please enter a value');
+            return;
+        }
+
+        // Update resume data based on field
+        if (editField === 'name') {
+            setResumeData(prev => ({
+                ...prev,
+                personalInfo: { ...prev.personalInfo, name: editValue.trim() }
+            }));
+        } else if (editField === 'phone') {
+            setResumeData(prev => ({
+                ...prev,
+                personalInfo: { ...prev.personalInfo, phone: editValue.trim() }
+            }));
+        } else if (editField === 'email') {
+            setResumeData(prev => ({
+                ...prev,
+                personalInfo: { ...prev.personalInfo, email: editValue.trim() }
+            }));
+        } else if (editField === 'address') {
+            setResumeData(prev => ({
+                ...prev,
+                personalInfo: { ...prev.personalInfo, address: editValue.trim() }
+            }));
+        } else if (editField === 'trade') {
+            setResumeData(prev => ({
+                ...prev,
+                personalInfo: { ...prev.personalInfo, trade: editValue.trim() }
+            }));
+        } else if (editField === 'skills') {
+            setResumeData(prev => ({
+                ...prev,
+                skills: editValue.split(',').map(s => s.trim()).filter(s => s)
+            }));
+        } else if (editField === 'experience') {
+            setResumeData(prev => ({
+                ...prev,
+                experience: [{ description: editValue.trim() }]
+            }));
+        } else if (editField === 'certifications') {
+            setResumeData(prev => ({
+                ...prev,
+                certifications: editValue.split(',').map(s => s.trim()).filter(s => s)
+            }));
+        } else if (editField === 'education') {
+            setResumeData(prev => ({
+                ...prev,
+                education: [{ description: editValue.trim() }]
+            }));
+        }
+
+        setShowEditModal(false);
+        setEditField(null);
+        setEditValue('');
+    };
+
     return (
         <div className="flex flex-col h-[600px]">
             <div className="flex gap-2 mb-3">
@@ -411,6 +491,24 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                     {t.fillSample}
+                </button>
+                <button
+                    onClick={() => setShowEditModal(true)}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    {language === 'hi' && 'संपादित करें'}
+                    {language === 'or' && 'ସଂପାଦନ କରନ୍ତୁ'}
+                    {language === 'mr' && 'संपादित करा'}
+                    {language === 'ta' && 'திருத்து'}
+                    {language === 'te' && 'సవరించు'}
+                    {language === 'bn' && 'সম্পাদনা'}
+                    {language === 'gu' && 'સંપાદિત કરો'}
+                    {language === 'kn' && 'ಸಂಪಾದಿಸು'}
+                    {language === 'pa' && 'ਸੰਪਾਦਿਤ'}
+                    {language === 'en' && 'Edit'}
                 </button>
                 <button
                     onClick={resetResume}
@@ -536,6 +634,114 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     {t.send}
                 </button>
             </div>
+
+            {/* Edit Modal */}
+            {showEditModal && !editField && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowEditModal(false)}>
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold mb-4 text-gray-800">
+                            {language === 'hi' && 'क्या संपादित करें?'}
+                            {language === 'en' && 'What do you want to edit?'}
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                            <button onClick={() => openEditModal('name')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">📝 Name</div>
+                                <div className="text-xs text-blue-700">{resumeData.personalInfo?.name || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('phone')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">📞 Phone</div>
+                                <div className="text-xs text-blue-700">{resumeData.personalInfo?.phone || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('email')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">📧 Email</div>
+                                <div className="text-xs text-blue-700 truncate">{resumeData.personalInfo?.email || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('address')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">📍 Address</div>
+                                <div className="text-xs text-blue-700 truncate">{resumeData.personalInfo?.address || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('trade')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">🔧 Trade</div>
+                                <div className="text-xs text-blue-700">{resumeData.personalInfo?.trade || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('skills')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">⚡ Skills</div>
+                                <div className="text-xs text-blue-700">{resumeData.skills?.length || 0} skills</div>
+                            </button>
+                            <button onClick={() => openEditModal('experience')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors col-span-2">
+                                <div className="font-medium text-blue-900">💼 Experience</div>
+                                <div className="text-xs text-blue-700 line-clamp-1">{resumeData.experience?.[0]?.description || 'Not set'}</div>
+                            </button>
+                            <button onClick={() => openEditModal('certifications')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">🎓 Certificates</div>
+                                <div className="text-xs text-blue-700">{resumeData.certifications?.length || 0} items</div>
+                            </button>
+                            <button onClick={() => openEditModal('education')} className="px-4 py-3 bg-blue-100 hover:bg-blue-200 rounded-lg text-left transition-colors">
+                                <div className="font-medium text-blue-900">🎓 Education</div>
+                                <div className="text-xs text-blue-700 truncate">{resumeData.education?.[0]?.description || 'Not set'}</div>
+                            </button>
+                        </div>
+                        <button
+                            onClick={() => setShowEditModal(false)}
+                            className="mt-4 w-full px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium transition-colors"
+                        >
+                            {language === 'hi' && 'रद्द करें'}
+                            {language === 'en' && 'Cancel'}
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Value Modal */}
+            {showEditModal && editField && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => { setShowEditModal(false); setEditField(null); }}>
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold mb-4 text-gray-800 capitalize">
+                            {language === 'hi' && `${editField} संपादित करें`}
+                            {language === 'en' && `Edit ${editField}`}
+                        </h3>
+                        {(editField === 'skills' || editField === 'certifications') && (
+                            <p className="text-sm text-gray-600 mb-2">
+                                {language === 'hi' && 'कॉमा से अलग करें'}
+                                {language === 'en' && 'Separate with commas'}
+                            </p>
+                        )}
+                        {(editField === 'experience' || editField === 'education') ? (
+                            <textarea
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                                rows="5"
+                                placeholder={`Enter ${editField}...`}
+                            />
+                        ) : (
+                            <input
+                                type="text"
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                                placeholder={`Enter ${editField}...`}
+                            />
+                        )}
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => { setShowEditModal(false); setEditField(null); }}
+                                className="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg font-medium transition-colors"
+                            >
+                                {language === 'hi' && 'रद्द करें'}
+                                {language === 'en' && 'Cancel'}
+                            </button>
+                            <button
+                                onClick={saveEdit}
+                                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                            >
+                                {language === 'hi' && 'सहेजें'}
+                                {language === 'en' && 'Save'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
