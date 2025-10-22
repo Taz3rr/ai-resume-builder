@@ -167,28 +167,8 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Add AI response
             setMessages(prev => [...prev, { type: 'bot', text: result.message }]);
 
-            // Use AI-extracted data if available
-            if (result.extractedData && Object.keys(result.extractedData).length > 0) {
-                console.log('AI extracted data:', result.extractedData);
-                setResumeData(prev => ({
-                    ...prev,
-                    personalInfo: {
-                        ...prev.personalInfo,
-                        ...(result.extractedData.name && { name: result.extractedData.name }),
-                        ...(result.extractedData.phone && { phone: result.extractedData.phone }),
-                        ...(result.extractedData.email && { email: result.extractedData.email }),
-                        ...(result.extractedData.trade && { trade: result.extractedData.trade }),
-                        ...(result.extractedData.address && { address: result.extractedData.address })
-                    }
-                }));
-                // Show preview after name is set
-                if (result.extractedData.name) {
-                    setTimeout(() => onShowPreview(), 200);
-                }
-            } else {
-                // Fallback to pattern matching
-                updateResumeDataFromAI(userMessage.text, currentMessages);
-            }
+            // Always use pattern matching (reliable and fast)
+            updateResumeDataFromAI(userMessage.text, currentMessages);
 
             // Check if complete
             if (result.isComplete) {
