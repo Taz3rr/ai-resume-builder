@@ -228,8 +228,13 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     personalInfo: { ...prev.personalInfo, phone: phoneMatch[0].trim() }
                 }));
                 console.log('Set phone:', phoneMatch[0].trim());
+                console.log('Calling onShowPreview in 200ms...');
+                alert('Phone detected! Showing preview now...');
                 // Show preview after phone is set (we already have name from first message)
-                setTimeout(() => onShowPreview(), 200);
+                setTimeout(() => {
+                    console.log('Executing onShowPreview NOW');
+                    onShowPreview();
+                }, 200);
             }
         } else if (/electrician|plumber|carpenter|mechanic|welder|mason|painter|driver|construction|fitter|technician/.test(text) && !resumeData.personalInfo?.trade) {
             // Contains trade keywords
