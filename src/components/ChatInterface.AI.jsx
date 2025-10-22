@@ -526,7 +526,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             <div className="flex gap-1.5 sm:gap-2 mb-3">
                 <button
                     onClick={fillSampleData}
-                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-lg font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base shadow-lg"
                 >
                     <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -536,7 +536,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 </button>
                 <button
                     onClick={() => setShowEditModal(true)}
-                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-blue-600/90 backdrop-blur-sm text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base shadow-lg"
                 >
                     <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -554,7 +554,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 </button>
                 <button
                     onClick={resetResume}
-                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base"
+                    className="flex-1 px-2 py-2 sm:px-4 sm:py-2 bg-red-500/90 backdrop-blur-sm text-white rounded-lg font-medium hover:bg-red-600 transition-colors flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-base shadow-lg"
                 >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -605,7 +605,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                         <div className="flex items-start gap-2 max-w-[85%] sm:max-w-[80%]">
                             <div
                                 className={`px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base break-words ${msg.type === 'user'
-                                    ? 'bg-indigo-600 text-white'
+                                    ? 'bg-blue-600 text-white'
                                     : 'bg-white text-gray-800 shadow-md'
                                     }`}
                             >
@@ -616,7 +616,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                                     onClick={() => speakingMessageId === idx ? stopSpeaking() : speakText(msg.text, idx)}
                                     className={`p-1.5 sm:p-2 rounded-full flex-shrink-0 transition-all ${speakingMessageId === idx
                                         ? 'bg-red-500 text-white animate-pulse'
-                                        : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'
+                                        : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
                                         }`}
                                     title={speakingMessageId === idx ? 'Stop' : 'Listen'}
                                 >
@@ -638,7 +638,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     <div className="flex justify-start">
                         <div className="px-3 py-2 sm:px-4 sm:py-3 rounded-lg bg-white text-gray-800 shadow-md text-sm sm:text-base">
                             <div className="flex items-center gap-2">
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                                 <span>Thinking...</span>
                             </div>
                         </div>
@@ -653,7 +653,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     disabled={isListening || isProcessing}
                     className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-colors text-sm sm:text-base flex-shrink-0 ${isListening
                         ? 'bg-red-500 text-white animate-pulse'
-                        : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                         }`}
                     title={t.voiceInput}
                 >
@@ -666,12 +666,12 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     onKeyPress={handleKeyPress}
                     placeholder={isProcessing ? 'Wait...' : t.typeHere}
                     disabled={isProcessing}
-                    className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
+                    className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                 />
                 <button
                     onClick={handleSend}
                     disabled={isProcessing}
-                    className="px-4 py-2 sm:px-6 sm:py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:bg-gray-400 flex-shrink-0 text-sm sm:text-base"
+                    className="px-4 py-2 sm:px-6 sm:py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 flex-shrink-0 text-sm sm:text-base"
                 >
                     {t.send}
                 </button>

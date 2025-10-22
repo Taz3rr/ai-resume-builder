@@ -2,7 +2,7 @@ import React from 'react';
 
 const LandingPage = ({ onGetStarted, language, setLanguage }) => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 flex items-center justify-center px-4">
             <div className="max-w-4xl mx-auto text-center">
                 {/* Language Selector - Floating */}
                 <div className="absolute top-3 right-3 sm:top-6 sm:right-6">
@@ -23,7 +23,7 @@ const LandingPage = ({ onGetStarted, language, setLanguage }) => {
                             <option value="kn">ಕನ್ನಡ (Kannada)</option>
                             <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
                         </select>
-                        <svg className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-indigo-600 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-blue-600 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
@@ -35,7 +35,7 @@ const LandingPage = ({ onGetStarted, language, setLanguage }) => {
                     <div className="mb-8 flex justify-center">
                         <div className="bg-white rounded-full p-6 shadow-2xl">
                             <svg
-                                className="w-20 h-20 text-indigo-600"
+                                className="w-20 h-20 text-blue-600"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -90,7 +90,7 @@ const LandingPage = ({ onGetStarted, language, setLanguage }) => {
                     {/* CTA Button */}
                     <button
                         onClick={onGetStarted}
-                        className="group bg-white text-indigo-600 px-12 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
+                        className="group bg-white text-blue-600 px-12 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
                     >
                         <span>
                             {language === 'hi' && 'शुरू करें'}

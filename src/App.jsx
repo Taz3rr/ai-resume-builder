@@ -49,28 +49,28 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500">
             {/* Header */}
-            <header className="bg-white shadow-md">
+            <header className="bg-white/10 backdrop-blur-md shadow-lg border-b border-white/20">
                 <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center">
                         <div>
-                            <h1 className="text-3xl font-bold text-indigo-600">
+                            <h1 className="text-3xl font-bold text-white">
                                 {t.title}
                             </h1>
-                            <p className="text-sm text-gray-600 mt-1">{t.subtitle}</p>
+                            <p className="text-sm text-white/80 mt-1">{t.subtitle}</p>
                         </div>
                         <div className="relative">
                             <select
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
-                                className="px-4 py-2 pr-8 bg-white border-2 border-indigo-300 text-gray-700 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer appearance-none"
+                                className="px-4 py-2 pr-8 bg-white/90 backdrop-blur-sm border-2 border-white text-gray-700 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-white cursor-pointer appearance-none shadow-lg"
                             >
                                 <option value="en">English</option>
                                 <option value="hi">हिंदी (Hindi)</option>
                                 <option value="or">ଓଡ଼ିଆ (Odia)</option>
                             </select>
-                            <svg className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-indigo-600 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-600 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
@@ -82,7 +82,7 @@ function App() {
             <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Chat Interface */}
-                    <div className="bg-white rounded-lg shadow-lg p-6">
+                    <div className="bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-6 border border-white/20">
                         <ChatInterface
                             language={language}
                             resumeData={resumeData}
@@ -92,7 +92,7 @@ function App() {
                     </div>
 
                     {/* Resume Preview */}
-                    <div className="bg-white rounded-lg shadow-lg p-6">
+                    <div className="bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-6 border border-white/20">
                         <ResumePreview
                             language={language}
                             resumeData={resumeData}
@@ -103,9 +103,9 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="bg-white mt-12 border-t border-gray-200">
+            <footer className="bg-white/10 backdrop-blur-md mt-12 border-t border-white/20">
                 <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-                    <p className="text-center text-gray-500 text-sm">
+                    <p className="text-center text-white/90 text-sm">
                         {t.footer} | 100% Free & Open Source
                     </p>
                 </div>
