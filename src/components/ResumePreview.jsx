@@ -155,32 +155,32 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
                 <div ref={resumeRef} className="p-4 sm:p-8 bg-white resume-content">
                     {/* Header */}
                     <div className="border-b-4 border-indigo-600 pb-3 sm:pb-4 mb-4 sm:mb-6">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 uppercase break-words">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 uppercase break-words tracking-wide">
                             {personalInfo.name || 'YOUR NAME'}
                         </h1>
-                        <p className="text-lg sm:text-xl text-indigo-600 font-semibold mt-1 break-words">
+                        <p className="text-lg sm:text-xl text-indigo-600 font-semibold mt-2 break-words capitalize">
                             {personalInfo.trade || 'Your Trade/Profession'}
                         </p>
                     </div>
 
                     {/* Contact Info */}
-                    <div className="mb-4 sm:mb-6 flex flex-col gap-2 text-sm text-gray-700">
+                    <div className="mb-4 sm:mb-6 flex flex-col gap-2 text-sm sm:text-base text-gray-700">
                         {personalInfo.phone && (
                             <div className="flex items-start gap-2">
-                                <span className="font-semibold flex-shrink-0">📞</span>
+                                <span className="font-semibold flex-shrink-0">📞 Phone:</span>
                                 <span className="break-words">{personalInfo.phone}</span>
                             </div>
                         )}
                         {personalInfo.email && (
                             <div className="flex items-start gap-2">
-                                <span className="font-semibold flex-shrink-0">✉️</span>
+                                <span className="font-semibold flex-shrink-0">✉️ Email:</span>
                                 <span className="break-words">{personalInfo.email}</span>
                             </div>
                         )}
                         {personalInfo.address && (
                             <div className="flex items-start gap-2">
-                                <span className="font-semibold flex-shrink-0">📍</span>
-                                <span className="break-words flex-1">{personalInfo.address}</span>
+                                <span className="font-semibold flex-shrink-0">📍 Location:</span>
+                                <span className="break-words flex-1 capitalize">{personalInfo.address}</span>
                             </div>
                         )}
                     </div>
@@ -188,14 +188,14 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
                     {/* Skills */}
                     {skills && skills.length > 0 && (
                         <div className="mb-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase border-b-2 border-gray-300 pb-1">
-                                Skills & Competencies
+                            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 uppercase border-b-2 border-indigo-600 pb-1">
+                                💼 Skills & Competencies
                             </h2>
                             <div className="flex flex-wrap gap-2">
                                 {skills.map((skill, idx) => (
                                     <span
                                         key={idx}
-                                        className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium"
+                                        className="px-3 py-1.5 bg-indigo-100 text-indigo-900 rounded-lg text-sm font-medium capitalize shadow-sm"
                                     >
                                         {skill}
                                     </span>

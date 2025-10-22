@@ -173,7 +173,7 @@ export const generateAIResponse = async (messages, language = 'en', userData = {
             messages: conversationHistory,
             model: 'llama-3.1-8b-instant', // Fast and free!
             temperature: 0.7,
-            max_tokens: 50, // Force SHORT responses - no long summaries!
+            max_tokens: 60, // Short responses but enough for complete questions
             top_p: 1,
             stream: false
         });
@@ -194,20 +194,20 @@ export const generateAIResponse = async (messages, language = 'en', userData = {
 Conversation:
 ${conversationContext}
 
-Extract ONLY what the user has provided so far:
+Extract ONLY what the user has provided so far. Format properly with capital letters:
 {
-  "name": "full name if mentioned",
+  "name": "Full Name With Capitals (e.g., Kalpit Das)",
   "phone": "phone number if mentioned",
   "email": "email if mentioned",
-  "trade": "job/profession/work type if mentioned",
-  "skills": ["skill1", "skill2"] if mentioned (as array),
-  "address": "location if mentioned",
-  "experience": "work experience details if mentioned (years, projects, companies, etc.)",
-  "education": "education details if mentioned (degree, school/college name, year, etc.)",
-  "certifications": "certifications/licenses if mentioned (ITI, NCVT, trade license, etc.)"
+  "trade": "Job/Profession With Capitals (e.g., Plumber, Electrician, Stone Mason)",
+  "skills": ["Skill 1", "Skill 2"] if mentioned (capitalize each skill),
+  "address": "Location With Capitals if mentioned",
+  "experience": "Work experience details properly formatted",
+  "education": "Education details properly formatted (e.g., 10th Pass from ABC School, B.Tech from XYZ College)",
+  "certifications": "Certifications/licenses properly formatted"
 }
 
-Return ONLY the JSON object with the fields that were mentioned. Omit fields not mentioned yet.`;
+IMPORTANT: Capitalize names, trades, skills, locations properly! Return ONLY the JSON object with fields that were mentioned.`;
 
             const extractCall = await groq.chat.completions.create({
                 messages: [{ role: 'user', content: extractPrompt }],
