@@ -12,7 +12,6 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
     const [speakingMessageId, setSpeakingMessageId] = useState(null);
     const [isAIMode, setIsAIMode] = useState(true); // Try AI first
     const [isProcessing, setIsProcessing] = useState(false);
-    const [isConversationComplete, setIsConversationComplete] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editField, setEditField] = useState(null);
     const [editValue, setEditValue] = useState('');
@@ -235,9 +234,8 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 }
             }
 
-            // Check if complete
+            // Check if complete and show preview
             if (result.isComplete) {
-                setIsConversationComplete(true);
                 onShowPreview();
             }
         }
@@ -666,13 +664,13 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder={isConversationComplete ? 'Done' : (isProcessing ? 'Wait...' : t.typeHere)}
-                    disabled={isProcessing || isConversationComplete}
+                    placeholder={isProcessing ? 'Wait...' : t.typeHere}
+                    disabled={isProcessing}
                     className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
                 />
                 <button
                     onClick={handleSend}
-                    disabled={isProcessing || isConversationComplete}
+                    disabled={isProcessing}
                     className="px-4 py-2 sm:px-6 sm:py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:bg-gray-400 flex-shrink-0 text-sm sm:text-base"
                 >
                     {t.send}
