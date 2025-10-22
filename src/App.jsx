@@ -80,9 +80,16 @@ function App() {
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                {/* Welcome Banner */}
+                <div className="bg-white/15 backdrop-blur-md rounded-xl p-4 mb-6 border border-white/20 shadow-lg">
+                    <p className="text-white text-center text-sm sm:text-base font-medium">
+                        💬 <strong>Chat with AI</strong> to create your professional resume in minutes!
+                    </p>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Chat Interface */}
-                    <div className="bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-6 border border-white/20">
+                    <div className="bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl p-6 border border-white/20 hover:shadow-3xl transition-shadow duration-300">
                         <ChatInterface
                             language={language}
                             resumeData={resumeData}
@@ -92,7 +99,7 @@ function App() {
                     </div>
 
                     {/* Resume Preview */}
-                    <div className="bg-white/95 backdrop-blur-lg rounded-lg shadow-2xl p-6 border border-white/20">
+                    <div className="bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl p-6 border border-white/20 hover:shadow-3xl transition-shadow duration-300">
                         <ResumePreview
                             language={language}
                             resumeData={resumeData}

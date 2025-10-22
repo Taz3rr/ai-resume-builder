@@ -69,28 +69,28 @@ const LandingPage = ({ onGetStarted, language, setLanguage }) => {
 
                     {/* Features */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-3xl mx-auto">
-                        <div className="bg-white/10 backdrop-blur-lg rounded-lg p-4 text-white">
-                            <div className="text-3xl mb-2">🎤</div>
-                            <p className="text-sm font-medium">Voice Input</p>
+                        <div className="bg-white/15 backdrop-blur-lg rounded-xl p-5 text-white hover:bg-white/25 transition-all duration-300 hover:scale-105 cursor-default border border-white/20 shadow-lg">
+                            <div className="text-4xl mb-2">🎤</div>
+                            <p className="text-sm font-semibold">Voice Input</p>
                         </div>
-                        <div className="bg-white/10 backdrop-blur-lg rounded-lg p-4 text-white">
-                            <div className="text-3xl mb-2">🌐</div>
-                            <p className="text-sm font-medium">10+ Languages</p>
+                        <div className="bg-white/15 backdrop-blur-lg rounded-xl p-5 text-white hover:bg-white/25 transition-all duration-300 hover:scale-105 cursor-default border border-white/20 shadow-lg">
+                            <div className="text-4xl mb-2">🤖</div>
+                            <p className="text-sm font-semibold">AI-Powered</p>
                         </div>
-                        <div className="bg-white/10 backdrop-blur-lg rounded-lg p-4 text-white">
-                            <div className="text-3xl mb-2">📱</div>
-                            <p className="text-sm font-medium">WhatsApp Share</p>
+                        <div className="bg-white/15 backdrop-blur-lg rounded-xl p-5 text-white hover:bg-white/25 transition-all duration-300 hover:scale-105 cursor-default border border-white/20 shadow-lg">
+                            <div className="text-4xl mb-2">📱</div>
+                            <p className="text-sm font-semibold">Mobile First</p>
                         </div>
-                        <div className="bg-white/10 backdrop-blur-lg rounded-lg p-4 text-white">
-                            <div className="text-3xl mb-2">🔒</div>
-                            <p className="text-sm font-medium">100% Private</p>
+                        <div className="bg-white/15 backdrop-blur-lg rounded-xl p-5 text-white hover:bg-white/25 transition-all duration-300 hover:scale-105 cursor-default border border-white/20 shadow-lg">
+                            <div className="text-4xl mb-2">🔒</div>
+                            <p className="text-sm font-semibold">100% Private</p>
                         </div>
                     </div>
 
                     {/* CTA Button */}
                     <button
                         onClick={onGetStarted}
-                        className="group bg-white text-blue-600 px-12 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
+                        className="group relative bg-white text-blue-600 px-12 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto animate-pulse hover:animate-none"
                     >
                         <span>
                             {language === 'hi' && 'शुरू करें'}
@@ -120,17 +120,17 @@ const LandingPage = ({ onGetStarted, language, setLanguage }) => {
                     </button>
 
                     {/* Sub Text */}
-                    <p className="mt-8 text-white/80 text-lg">
-                        {language === 'hi' && '🎉 100% मुफ्त • कोई लॉगिन नहीं • ऑफलाइन काम करता है'}
-                        {language === 'or' && '🎉 100% ମାଗଣା • କୌଣସି ଲଗଇନ୍ ନାହିଁ • ଅଫଲାଇନ୍ କାମ କରେ'}
-                        {language === 'mr' && '🎉 100% मोफत • लॉगिन नाही • ऑफलाइन कार्य करते'}
-                        {language === 'ta' && '🎉 100% இலவசம் • உள்நுழைவு இல்லை • ஆஃப்லைனில் வேலை செய்கிறது'}
-                        {language === 'te' && '🎉 100% ఉచితం • లాగిన్ లేదు • ఆఫ్‌లైన్ పని చేస్తుంది'}
-                        {language === 'bn' && '🎉 100% বিনামূল্যে • কোন লগইন নেই • অফলাইনে কাজ করে'}
-                        {language === 'gu' && '🎉 100% મફત • કોઈ લોગિન નથી • ઓફલાઇન કામ કરે છે'}
-                        {language === 'kn' && '🎉 100% ಉಚಿತ • ಯಾವುದೇ ಲಾಗಿನ್ ಇಲ್ಲ • ಆಫ್‌ಲೈನ್ ಕೆಲಸ ಮಾಡುತ್ತದೆ'}
-                        {language === 'pa' && '🎉 100% ਮੁਫਤ • ਕੋਈ ਲੌਗਇਨ ਨਹੀਂ • ਔਫਲਾਈਨ ਕੰਮ ਕਰਦਾ ਹੈ'}
-                        {language === 'en' && '🎉 100% Free • No Login Required • Works Offline'}
+                    <p className="mt-8 text-white/90 text-lg font-medium">
+                        {language === 'hi' && '✨ 100% मुफ्त • कोई लॉगिन नहीं • AI-संचालित'}
+                        {language === 'or' && '✨ 100% ମାଗଣା • କୌଣସି ଲଗଇନ୍ ନାହିଁ • AI-ଚାଳିତ'}
+                        {language === 'mr' && '✨ 100% मोफत • लॉगिन नाही • AI-संचालित'}
+                        {language === 'ta' && '✨ 100% இலவசம் • உள்நுழைவு இல்லை • AI-இயக்கப்படுகிறது'}
+                        {language === 'te' && '✨ 100% ఉచితం • లాగిన్ లేదు • AI-ఆధారితం'}
+                        {language === 'bn' && '✨ 100% বিনামূল্যে • কোন লগইন নেই • AI-চালিত'}
+                        {language === 'gu' && '✨ 100% મફત • કોઈ લોગિન નથી • AI-સંચાલિત'}
+                        {language === 'kn' && '✨ 100% ಉಚಿತ • ಯಾವುದೇ ಲಾಗಿನ್ ಇಲ್ಲ • AI-ನಿರ್ವಹಣೆ'}
+                        {language === 'pa' && '✨ 100% ਮੁਫਤ • ਕੋਈ ਲੌਗਇਨ ਨਹੀਂ • AI-ਸੰਚਾਲਿਤ'}
+                        {language === 'en' && '✨ 100% Free • No Login Required • AI-Powered'}
                     </p>
                 </div>
             </div>
