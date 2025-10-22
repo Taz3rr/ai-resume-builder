@@ -32,17 +32,61 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
     };
 
     const shareOnWhatsApp = async () => {
-        const element = resumeRef.current;
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-        });
-
-        const imgData = canvas.toDataURL('image/png');
-        const message = `Check out my professional resume! 📄\nName: ${resumeData.personalInfo.name || 'Professional'}\nTrade: ${resumeData.personalInfo.trade || 'Skilled Worker'}`;
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+        // Ask user if they want to share as TEXT or PDF
+        const shareAsPDF = window.confirm('Share resume as PDF?\n\nClick OK to share PDF\nClick Cancel to share as Text');
+        
+        if (shareAsPDF) {
+            // Generate PDF and share
+            const { pdf, filename } = await downloadPDF();
+            const pdfBlob = pdf.output('blob');
+            
+            // Check if Web Share API is available (for mobile)
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename, { type: 'application/pdf' })] })) {
+                try {
+                    const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+                    await navigator.share({
+                        title: 'My Resume',
+                        text: `${resumeData.personalInfo.name || 'Professional'} - Resume`,
+                        files: [file]
+                    });
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    // Fallback: download PDF and show message
+                    alert('PDF downloaded! Please share it manually via WhatsApp.');
+                }
+            } else {
+                // Desktop: Download PDF and show WhatsApp message
+                alert('PDF downloaded! Please share it manually via WhatsApp.');
+            }
+        } else {
+            // Share as text
+            const { personalInfo, skills, experience, certifications, education } = resumeData;
+            let message = `📄 *${personalInfo.name || 'My Resume'}*\n\n`;
+            
+            if (personalInfo.trade) message += `🔧 *${personalInfo.trade}*\n\n`;
+            if (personalInfo.phone) message += `📞 ${personalInfo.phone}\n`;
+            if (personalInfo.email) message += `📧 ${personalInfo.email}\n`;
+            if (personalInfo.address) message += `📍 ${personalInfo.address}\n`;
+            
+            if (skills && skills.length > 0) {
+                message += `\n⚡ *Skills:*\n${skills.map(s => `• ${s}`).join('\n')}\n`;
+            }
+            
+            if (experience && experience.length > 0 && experience[0].description) {
+                message += `\n💼 *Experience:*\n${experience[0].description}\n`;
+            }
+            
+            if (certifications && certifications.length > 0) {
+                message += `\n🎓 *Certifications:*\n${certifications.map(c => `• ${c}`).join('\n')}\n`;
+            }
+            
+            if (education && education.length > 0 && education[0].description) {
+                message += `\n📚 *Education:*\n${education[0].description}\n`;
+            }
+            
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
     };
 
     const printResume = () => {
@@ -108,19 +152,19 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
             </div>
 
             <div className="flex-1 overflow-y-auto bg-white border border-gray-200 rounded-lg">
-                <div ref={resumeRef} className="p-8 bg-white resume-content">
+                <div ref={resumeRef} className="p-4 sm:p-8 bg-white resume-content">
                     {/* Header */}
-                    <div className="border-b-4 border-indigo-600 pb-4 mb-6">
-                        <h1 className="text-3xl font-bold text-gray-900 uppercase">
+                    <div className="border-b-4 border-indigo-600 pb-3 sm:pb-4 mb-4 sm:mb-6">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 uppercase break-words">
                             {personalInfo.name || 'YOUR NAME'}
                         </h1>
-                        <p className="text-xl text-indigo-600 font-semibold mt-1">
+                        <p className="text-lg sm:text-xl text-indigo-600 font-semibold mt-1 break-words">
                             {personalInfo.trade || 'Your Trade/Profession'}
                         </p>
                     </div>
 
                     {/* Contact Info */}
-                    <div className="mb-6 flex flex-col gap-2 text-sm text-gray-700">
+                    <div className="mb-4 sm:mb-6 flex flex-col gap-2 text-sm text-gray-700">
                         {personalInfo.phone && (
                             <div className="flex items-start gap-2">
                                 <span className="font-semibold flex-shrink-0">📞</span>

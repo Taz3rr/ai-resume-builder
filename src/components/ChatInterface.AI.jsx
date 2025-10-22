@@ -201,6 +201,8 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 console.log('Updated resumeData:', newData);
                 return newData;
             });
+            // Show preview immediately after name
+            setTimeout(() => onShowPreview(), 200);
         } else if (!resumeData.personalInfo?.name && conversationCount <= 3 && userText.length < 50 && /^[a-zA-Z\s.]+$/.test(userText) && !text.includes('electrician') && !text.includes('plumber') && !text.includes('carpenter') && !text.includes('mechanic')) {
             // Fallback: If name still not set and text looks like a name (only letters/spaces, not too long, not a trade)
             const fullName = userText.trim();
@@ -228,13 +230,6 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     personalInfo: { ...prev.personalInfo, phone: phoneMatch[0].trim() }
                 }));
                 console.log('Set phone:', phoneMatch[0].trim());
-                console.log('Calling onShowPreview in 200ms...');
-                alert('Phone detected! Showing preview now...');
-                // Show preview after phone is set (we already have name from first message)
-                setTimeout(() => {
-                    console.log('Executing onShowPreview NOW');
-                    onShowPreview();
-                }, 200);
             }
         } else if (/electrician|plumber|carpenter|mechanic|welder|mason|painter|driver|construction|fitter|technician/.test(text) && !resumeData.personalInfo?.trade) {
             // Contains trade keywords
