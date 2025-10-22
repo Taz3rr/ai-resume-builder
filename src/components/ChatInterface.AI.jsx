@@ -191,14 +191,14 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
         console.log('Current resumeData.personalInfo:', resumeData.personalInfo);
 
         // Detect what information is being provided based on conversation flow
-        if (conversationCount === 1 && !resumeData.personalInfo?.name) {
-            // First user response is likely the name - keep full name with spaces
+        if (conversationCount === 1) {
+            // First user response is ALWAYS the name - keep full name with spaces (override any existing name from localStorage)
             const fullName = userText.trim();
             setResumeData(prev => ({
                 ...prev,
                 personalInfo: { ...prev.personalInfo, name: fullName }
             }));
-            console.log('Set name (full):', fullName);
+            console.log('Set name (full) - OVERRIDING EXISTING:', fullName);
         } else if (!resumeData.personalInfo?.name && conversationCount <= 3 && userText.length < 50 && /^[a-zA-Z\s.]+$/.test(userText) && !text.includes('electrician') && !text.includes('plumber') && !text.includes('carpenter') && !text.includes('mechanic')) {
             // Fallback: If name still not set and text looks like a name (only letters/spaces, not too long, not a trade)
             const fullName = userText.trim();
