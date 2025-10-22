@@ -162,7 +162,7 @@ export const generateAIResponse = async (messages, language = 'en', userData = {
         let extractedData = {};
         try {
             const lastUserMessage = conversationHistory[conversationHistory.length - 1]?.content || '';
-            
+
             const extractPrompt = `From this user message, extract ONLY the data in JSON format. Return {} if nothing found.
 User said: "${lastUserMessage}"
 

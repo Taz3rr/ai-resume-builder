@@ -167,12 +167,17 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Add AI response
             setMessages(prev => [...prev, { type: 'bot', text: result.message }]);
 
+            console.log('AI Result:', result);
+            console.log('Extracted Data:', result.extractedData);
+
             // Use AI extracted data
             if (result.extractedData && Object.keys(result.extractedData).length > 0) {
-                console.log('Using AI extracted data:', result.extractedData);
+                console.log('✅ Using AI extracted data:', result.extractedData);
+                alert(`AI found: ${JSON.stringify(result.extractedData)}`);
+                
                 setResumeData(prev => {
                     const updated = { ...prev };
-                    
+
                     if (result.extractedData.name) {
                         updated.personalInfo = { ...updated.personalInfo, name: result.extractedData.name };
                     }
@@ -191,11 +196,11 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     if (result.extractedData.skills) {
                         updated.skills = result.extractedData.skills;
                     }
-                    
+
                     console.log('Updated resume data:', updated);
                     return updated;
                 });
-                
+
                 // Show preview after name
                 if (result.extractedData.name) {
                     setTimeout(() => onShowPreview(), 200);
