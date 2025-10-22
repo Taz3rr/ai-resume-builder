@@ -167,6 +167,13 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Try to extract and update resume data intelligently
             updateResumeDataFromAI(userMessage.text, currentMessages);
 
+            // Auto-show preview if we have minimum data
+            if (resumeData.personalInfo?.name &&
+                resumeData.personalInfo?.phone &&
+                (resumeData.skills?.length > 0 || resumeData.experience?.length > 0)) {
+                onShowPreview();
+            }
+
             // Check if complete
             if (result.isComplete) {
                 onShowPreview();
@@ -177,15 +184,20 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
     const updateResumeDataFromAI = (userText, conversationHistory) => {
         // Simple pattern matching to update resume data
         const text = userText.toLowerCase();
+        const conversationCount = conversationHistory.filter(m => m.type === 'user').length;
 
-        // Detect what information is being provided
-        if (conversationHistory.length <= 2 && !resumeData.personalInfo?.name) {
-            // First response is likely the name
+        console.log('Extracting data from:', userText);
+        console.log('Current conversation count:', conversationCount);
+
+        // Detect what information is being provided based on conversation flow
+        if (conversationCount === 1 && !resumeData.personalInfo?.name) {
+            // First user response is likely the name
             setResumeData(prev => ({
                 ...prev,
                 personalInfo: { ...prev.personalInfo, name: userText }
             }));
-        } else if (/@/.test(text)) {
+            console.log('Set name:', userText);
+        } else if (/@/.test(text) && !resumeData.personalInfo?.email) {
             // Contains @ symbol, likely email
             const emailMatch = userText.match(/[\w.-]+@[\w.-]+\.\w+/);
             if (emailMatch) {
@@ -193,8 +205,9 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     ...prev,
                     personalInfo: { ...prev.personalInfo, email: emailMatch[0] }
                 }));
+                console.log('Set email:', emailMatch[0]);
             }
-        } else if (/\d{10}|\+\d{2}\s?\d{10}|\d{5}\s?\d{5}/.test(text)) {
+        } else if (/\d{10}|\+\d{2}\s?\d{10}|\d{5}\s?\d{5}/.test(text) && !resumeData.personalInfo?.phone) {
             // Contains phone pattern
             const phoneMatch = userText.match(/[\d\s+-]+/);
             if (phoneMatch) {
@@ -202,29 +215,54 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     ...prev,
                     personalInfo: { ...prev.personalInfo, phone: phoneMatch[0].trim() }
                 }));
+                console.log('Set phone:', phoneMatch[0].trim());
             }
-        } else if (/electrician|plumber|carpenter|mechanic|welder|mason|painter|driver/.test(text)) {
+        } else if (/electrician|plumber|carpenter|mechanic|welder|mason|painter|driver|construction|fitter|technician/.test(text) && !resumeData.personalInfo?.trade) {
             // Contains trade keywords
             setResumeData(prev => ({
                 ...prev,
                 personalInfo: { ...prev.personalInfo, trade: userText }
             }));
+            console.log('Set trade:', userText);
+        } else if (userText.length > 20 && !text.includes(',') && (!resumeData.personalInfo?.address || text.includes('city') || text.includes('state'))) {
+            // Longer single-line text without commas might be address or experience
+            if (!resumeData.personalInfo?.address && (text.includes('live') || text.includes('from') || /mumbai|delhi|bangalore|chennai|kolkata|hyderabad|pune|ahmedabad/.test(text))) {
+                setResumeData(prev => ({
+                    ...prev,
+                    personalInfo: { ...prev.personalInfo, address: userText }
+                }));
+                console.log('Set address:', userText);
+            } else if (!resumeData.experience || resumeData.experience.length === 0 || resumeData.experience[0].description?.length < 50) {
+                // Likely experience description
+                setResumeData(prev => ({
+                    ...prev,
+                    experience: [{ description: userText }]
+                }));
+                console.log('Set experience:', userText);
+            }
+        } else if ((text.includes(',') || text.includes('and') || text.includes('\n')) && userText.length > 10) {
+            // List format, could be skills, certifications, or education
+            const items = userText.split(/,|and|\n/).map(s => s.trim()).filter(s => s && s.length > 2);
+
+            if ((!resumeData.skills || resumeData.skills.length === 0) && items.length >= 2) {
+                setResumeData(prev => ({ ...prev, skills: items }));
+                console.log('Set skills:', items);
+            } else if ((!resumeData.certifications || resumeData.certifications.length === 0) && items.length >= 1) {
+                setResumeData(prev => ({ ...prev, certifications: items }));
+                console.log('Set certifications:', items);
+            } else if (!resumeData.education || resumeData.education.length === 0) {
+                setResumeData(prev => ({ ...prev, education: [{ description: userText }] }));
+                console.log('Set education:', userText);
+            }
         } else if (/\d+\s*(years?|yrs?|yr)/.test(text)) {
-            // Contains experience duration
+            // Contains experience duration - append to experience
             setResumeData(prev => ({
                 ...prev,
-                experience: prev.experience.length > 0
-                    ? [{ description: prev.experience[0].description + ' ' + userText }]
+                experience: prev.experience && prev.experience.length > 0
+                    ? [{ description: prev.experience[0].description + '. ' + userText }]
                     : [{ description: userText }]
             }));
-        } else if (text.includes(',') || text.includes('and')) {
-            // List format, could be skills or certifications
-            const items = userText.split(/,|and/).map(s => s.trim()).filter(s => s);
-            if (!resumeData.skills || resumeData.skills.length === 0) {
-                setResumeData(prev => ({ ...prev, skills: items }));
-            } else if (!resumeData.certifications || resumeData.certifications.length === 0) {
-                setResumeData(prev => ({ ...prev, certifications: items }));
-            }
+            console.log('Added to experience:', userText);
         }
     };
 
