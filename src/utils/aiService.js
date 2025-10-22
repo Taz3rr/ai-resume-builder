@@ -158,9 +158,42 @@ export const generateAIResponse = async (messages, language = 'en', userData = {
 
         const response = completion.choices[0]?.message?.content || '';
 
+        // Ask AI to extract structured data from the conversation
+        let extractedData = {};
+        try {
+            const extractionPrompt = `Based on this conversation, extract ONLY the following data in JSON format:
+User said: "${conversationHistory[conversationHistory.length - 1].content}"
+
+Extract:
+- name (just the person's name, nothing else)
+- phone (phone number if mentioned)
+- email (email if mentioned)
+- trade (profession/job if mentioned)
+- address (location if mentioned)
+
+Return ONLY valid JSON with extracted fields, or empty object {} if nothing to extract.`;
+
+            const extractionCall = await groq.chat.completions.create({
+                messages: [{ role: 'user', content: extractionPrompt }],
+                model: 'llama-3.1-8b-instant',
+                temperature: 0.1,
+                max_tokens: 100,
+            });
+
+            const extractedText = extractionCall.choices[0]?.message?.content || '{}';
+            // Parse JSON from response (AI might wrap it in markdown)
+            const jsonMatch = extractedText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                extractedData = JSON.parse(jsonMatch[0]);
+            }
+        } catch (e) {
+            console.log('Data extraction failed, continuing without structured data:', e);
+        }
+
         return {
             success: true,
             message: response,
+            extractedData: extractedData,
             isComplete: missingFields.length === 0
         };
 
