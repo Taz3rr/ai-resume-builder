@@ -61,15 +61,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // Auto-show preview when minimum data is collected
-    useEffect(() => {
-        const hasMinimumData = resumeData.personalInfo?.name && resumeData.personalInfo?.phone;
-
-        if (hasMinimumData) {
-            console.log('Auto-showing preview - minimum data collected:', resumeData);
-            setTimeout(() => onShowPreview(), 100); // Small delay to ensure state is updated
-        }
-    }, [resumeData.personalInfo?.name, resumeData.personalInfo?.phone, resumeData.skills?.length, resumeData.experience?.length]);    // Initialize Speech Recognition
+    // Initialize Speech Recognition
     useEffect(() => {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -236,6 +228,8 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     personalInfo: { ...prev.personalInfo, phone: phoneMatch[0].trim() }
                 }));
                 console.log('Set phone:', phoneMatch[0].trim());
+                // Show preview after phone is set (we already have name from first message)
+                setTimeout(() => onShowPreview(), 200);
             }
         } else if (/electrician|plumber|carpenter|mechanic|welder|mason|painter|driver|construction|fitter|technician/.test(text) && !resumeData.personalInfo?.trade) {
             // Contains trade keywords
