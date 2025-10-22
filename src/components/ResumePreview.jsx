@@ -34,12 +34,12 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
     const shareOnWhatsApp = async () => {
         // Ask user if they want to share as TEXT or PDF
         const shareAsPDF = window.confirm('Share resume as PDF?\n\nClick OK to share PDF\nClick Cancel to share as Text');
-        
+
         if (shareAsPDF) {
             // Generate PDF and share
             const { pdf, filename } = await downloadPDF();
             const pdfBlob = pdf.output('blob');
-            
+
             // Check if Web Share API is available (for mobile)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename, { type: 'application/pdf' })] })) {
                 try {
@@ -62,28 +62,28 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
             // Share as text
             const { personalInfo, skills, experience, certifications, education } = resumeData;
             let message = `📄 *${personalInfo.name || 'My Resume'}*\n\n`;
-            
+
             if (personalInfo.trade) message += `🔧 *${personalInfo.trade}*\n\n`;
             if (personalInfo.phone) message += `📞 ${personalInfo.phone}\n`;
             if (personalInfo.email) message += `📧 ${personalInfo.email}\n`;
             if (personalInfo.address) message += `📍 ${personalInfo.address}\n`;
-            
+
             if (skills && skills.length > 0) {
                 message += `\n⚡ *Skills:*\n${skills.map(s => `• ${s}`).join('\n')}\n`;
             }
-            
+
             if (experience && experience.length > 0 && experience[0].description) {
                 message += `\n💼 *Experience:*\n${experience[0].description}\n`;
             }
-            
+
             if (certifications && certifications.length > 0) {
                 message += `\n🎓 *Certifications:*\n${certifications.map(c => `• ${c}`).join('\n')}\n`;
             }
-            
+
             if (education && education.length > 0 && education[0].description) {
                 message += `\n📚 *Education:*\n${education[0].description}\n`;
             }
-            
+
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }

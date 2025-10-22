@@ -190,15 +190,28 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
         // Detect what information is being provided based on conversation flow
         if (conversationCount === 1) {
-            // First user response is ALWAYS the name - keep full name with spaces (override any existing name from localStorage)
-            const fullName = userText.trim();
+            // First user response - extract actual name intelligently
+            let extractedName = userText.trim();
+
+            // Remove common phrases like "my name is", "i am", "this is", "hey", etc.
+            extractedName = extractedName
+                .replace(/^(hey|hi|hello|yo)\s+/i, '')
+                .replace(/^(my\s+name\s+is|i\s+am|i'm|this\s+is)\s+/i, '')
+                .replace(/^(it's|its)\s+/i, '')
+                .trim();
+
+            // Capitalize properly (each word)
+            extractedName = extractedName
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
+
             setResumeData(prev => {
                 const newData = {
                     ...prev,
-                    personalInfo: { ...prev.personalInfo, name: fullName }
+                    personalInfo: { ...prev.personalInfo, name: extractedName }
                 };
-                console.log('Set name (full) - OVERRIDING EXISTING:', fullName);
-                console.log('Updated resumeData:', newData);
+                console.log('Extracted name from:', userText, '-> Result:', extractedName);
                 return newData;
             });
             // Show preview immediately after name
