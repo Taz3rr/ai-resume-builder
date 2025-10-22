@@ -9,7 +9,7 @@ const LanguageSelection = ({ onLanguageSelect }) => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 flex items-center justify-center p-4">
             <div className="max-w-4xl w-full">
                 <div className="text-center mb-12 animate-fadeIn">
                     <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-lg">
@@ -33,12 +33,12 @@ const LanguageSelection = ({ onLanguageSelect }) => {
                         <button
                             key={lang.code}
                             onClick={() => onLanguageSelect(lang.code)}
-                            className="bg-white/95 backdrop-blur-sm hover:bg-white hover:scale-105 active:scale-95 
-                                     transition-all duration-300 rounded-2xl p-8 shadow-xl hover:shadow-2xl
-                                     border-2 border-transparent hover:border-white
+                            className="bg-white/90 backdrop-blur-md hover:bg-white hover:scale-105 active:scale-95 
+                                     transition-all duration-300 rounded-2xl p-8 shadow-2xl hover:shadow-3xl
+                                     border-2 border-white/20 hover:border-white
                                      flex flex-col items-center justify-center gap-3 group"
                         >
-                            <div className="text-5xl font-bold text-indigo-600 group-hover:text-purple-600 transition-colors">
+                            <div className="text-5xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors">
                                 {lang.nativeName}
                             </div>
                             <div className="text-sm text-gray-600 font-medium">
