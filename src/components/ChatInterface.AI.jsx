@@ -167,8 +167,40 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Add AI response
             setMessages(prev => [...prev, { type: 'bot', text: result.message }]);
 
-            // Always use pattern matching (reliable and fast)
-            updateResumeDataFromAI(userMessage.text, currentMessages);
+            // Use AI extracted data
+            if (result.extractedData && Object.keys(result.extractedData).length > 0) {
+                console.log('Using AI extracted data:', result.extractedData);
+                setResumeData(prev => {
+                    const updated = { ...prev };
+                    
+                    if (result.extractedData.name) {
+                        updated.personalInfo = { ...updated.personalInfo, name: result.extractedData.name };
+                    }
+                    if (result.extractedData.phone) {
+                        updated.personalInfo = { ...updated.personalInfo, phone: result.extractedData.phone };
+                    }
+                    if (result.extractedData.email) {
+                        updated.personalInfo = { ...updated.personalInfo, email: result.extractedData.email };
+                    }
+                    if (result.extractedData.trade) {
+                        updated.personalInfo = { ...updated.personalInfo, trade: result.extractedData.trade };
+                    }
+                    if (result.extractedData.address) {
+                        updated.personalInfo = { ...updated.personalInfo, address: result.extractedData.address };
+                    }
+                    if (result.extractedData.skills) {
+                        updated.skills = result.extractedData.skills;
+                    }
+                    
+                    console.log('Updated resume data:', updated);
+                    return updated;
+                });
+                
+                // Show preview after name
+                if (result.extractedData.name) {
+                    setTimeout(() => onShowPreview(), 200);
+                }
+            }
 
             // Check if complete
             if (result.isComplete) {
@@ -185,12 +217,21 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
         // SIMPLE: First message = name, Second = phone, then pattern match for specific data
         if (conversationCount === 1 && !resumeData.personalInfo?.name) {
-            // First message is name
+            // First message is name - clean it up
+            let cleanName = userText.trim();
+
+            // Remove common phrases
+            cleanName = cleanName
+                .replace(/^(hey|hi|hello|heelo|namaste|yo)\s*/i, '')
+                .replace(/\s*(my\s+name\s+is|i\s+am|i'm|naam)\s*/i, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+
             setResumeData(prev => ({
                 ...prev,
-                personalInfo: { ...prev.personalInfo, name: userText.trim() }
+                personalInfo: { ...prev.personalInfo, name: cleanName }
             }));
-            console.log('Set name:', userText.trim());
+            console.log('Set name:', cleanName);
             setTimeout(() => onShowPreview(), 200);
         } else if (/@/.test(userText) && !resumeData.personalInfo?.email) {
             // Email detected
