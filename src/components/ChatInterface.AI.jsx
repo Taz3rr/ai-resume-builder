@@ -61,6 +61,16 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    // Auto-show preview when minimum data is collected
+    useEffect(() => {
+        if (resumeData.personalInfo?.name &&
+            resumeData.personalInfo?.phone &&
+            (resumeData.skills?.length > 0 || resumeData.experience?.length > 0)) {
+            console.log('Auto-showing preview - minimum data collected');
+            onShowPreview();
+        }
+    }, [resumeData, onShowPreview]);
+
     // Initialize Speech Recognition
     useEffect(() => {
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -170,12 +180,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Try to extract and update resume data intelligently
             updateResumeDataFromAI(userMessage.text, currentMessages);
 
-            // Auto-show preview if we have minimum data
-            if (resumeData.personalInfo?.name &&
-                resumeData.personalInfo?.phone &&
-                (resumeData.skills?.length > 0 || resumeData.experience?.length > 0)) {
-                onShowPreview();
-            }
+            // The useEffect will auto-show preview when data is ready
 
             // Check if complete
             if (result.isComplete) {
