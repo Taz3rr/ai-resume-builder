@@ -63,13 +63,15 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
     // Auto-show preview when minimum data is collected
     useEffect(() => {
-        if (resumeData.personalInfo?.name &&
+        const hasMinimumData = resumeData.personalInfo?.name &&
             resumeData.personalInfo?.phone &&
-            (resumeData.skills?.length > 0 || resumeData.experience?.length > 0)) {
-            console.log('Auto-showing preview - minimum data collected');
-            onShowPreview();
+            (resumeData.skills?.length > 0 || resumeData.experience?.length > 0);
+        
+        if (hasMinimumData) {
+            console.log('Auto-showing preview - minimum data collected:', resumeData);
+            setTimeout(() => onShowPreview(), 100); // Small delay to ensure state is updated
         }
-    }, [resumeData, onShowPreview]);
+    }, [resumeData.personalInfo?.name, resumeData.personalInfo?.phone, resumeData.skills?.length, resumeData.experience?.length]);
 
     // Initialize Speech Recognition
     useEffect(() => {
@@ -202,11 +204,15 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
         if (conversationCount === 1) {
             // First user response is ALWAYS the name - keep full name with spaces (override any existing name from localStorage)
             const fullName = userText.trim();
-            setResumeData(prev => ({
-                ...prev,
-                personalInfo: { ...prev.personalInfo, name: fullName }
-            }));
-            console.log('Set name (full) - OVERRIDING EXISTING:', fullName);
+            setResumeData(prev => {
+                const newData = {
+                    ...prev,
+                    personalInfo: { ...prev.personalInfo, name: fullName }
+                };
+                console.log('Set name (full) - OVERRIDING EXISTING:', fullName);
+                console.log('Updated resumeData:', newData);
+                return newData;
+            });
         } else if (!resumeData.personalInfo?.name && conversationCount <= 3 && userText.length < 50 && /^[a-zA-Z\s.]+$/.test(userText) && !text.includes('electrician') && !text.includes('plumber') && !text.includes('carpenter') && !text.includes('mechanic')) {
             // Fallback: If name still not set and text looks like a name (only letters/spaces, not too long, not a trade)
             const fullName = userText.trim();
