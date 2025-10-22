@@ -180,6 +180,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                         personalInfo: { ...prev.personalInfo }
                     };
 
+                    // Update personal info fields
                     if (result.extractedData.name) {
                         updated.personalInfo.name = result.extractedData.name;
                     }
@@ -195,8 +196,25 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     if (result.extractedData.address) {
                         updated.personalInfo.address = result.extractedData.address;
                     }
+                    
+                    // Update skills (array)
                     if (result.extractedData.skills) {
                         updated.skills = result.extractedData.skills;
+                    }
+                    
+                    // Update experience (flexible text)
+                    if (result.extractedData.experience) {
+                        updated.experience = [{ description: result.extractedData.experience }];
+                    }
+                    
+                    // Update education (flexible text - can be 10th, BTech, anything!)
+                    if (result.extractedData.education) {
+                        updated.education = [{ description: result.extractedData.education }];
+                    }
+                    
+                    // Update certifications (flexible text)
+                    if (result.extractedData.certifications) {
+                        updated.certifications = [{ description: result.extractedData.certifications }];
                     }
 
                     console.log('✅ FINAL Updated resume data:', updated);
