@@ -204,12 +204,15 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                 });
 
                 // Show preview after name
+                console.log('🔍 Checking extracted name:', result.extractedData?.name);
                 if (result.extractedData.name) {
                     console.log('🎯 Calling onShowPreview()...');
                     setTimeout(() => {
                         console.log('🚀 Executing onShowPreview NOW!');
                         onShowPreview();
                     }, 200);
+                } else {
+                    console.log('❌ No name found, NOT showing preview');
                 }
             }
 

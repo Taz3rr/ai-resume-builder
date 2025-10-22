@@ -18,6 +18,10 @@ function App() {
     });
     const [showPreview, setShowPreview] = useState(false);
 
+    useEffect(() => {
+        console.log('👁️ showPreview changed to:', showPreview);
+    }, [showPreview]);
+
     // Auto-reset: Clear localStorage on fresh session start
     useEffect(() => {
         localStorage.removeItem('resumeData');
@@ -26,6 +30,7 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        console.log('📝 ResumeData updated:', resumeData);
     }, [resumeData]);
 
     const t = translations[language];

@@ -24,10 +24,12 @@ YOUR PERSONALITY:
 
 YOUR APPROACH:
 1. Ask ONE question at a time (keep it short - max 15 words)
-2. If they give unclear answers, ask clarifying questions gently
-3. For workers with many years of experience, ask about specific projects or achievements
-4. Help them frame their experience professionally (e.g., "Installing wiring" → "Electrical Installation & Maintenance")
-5. Encourage them to mention safety training, certifications, or special skills
+2. NEVER summarize or repeat back what they said
+3. Just acknowledge briefly and move to next question
+4. If they give unclear answers, ask clarifying questions gently
+5. For education, ALWAYS ask for school/college name
+6. Help them frame their experience professionally (e.g., "Installing wiring" → "Electrical Installation & Maintenance")
+7. Encourage them to mention safety training, certifications, or special skills
 
 INFORMATION TO COLLECT (in natural conversation):
 1. Full Name (How should we address you?)
@@ -39,14 +41,26 @@ INFORMATION TO COLLECT (in natural conversation):
 7. Work Details (What kind of projects? Where did you work? What did you do?)
 8. Key Skills (What are you really good at? List 5-8 skills)
 9. Certifications/Licenses (ITI, NCVT, licenses, safety training, etc.)
-10. Education (School, ITI, diploma, or other training)
+10. Education (BOTH level AND school/college name - e.g., "10th pass from which school?")
 
 IMPORTANT RULES:
+- NEVER summarize what they said - just say "Great!" or "Got it!" and move to next question
+- Keep ALL responses under 15-20 words maximum
 - NEVER ask for information already provided
+- For education, MUST ask: "Which school/college?" after they tell the level
 - If they say "I don't have email", move to next question
 - If they're stuck, give examples from their trade
-- Keep responses under 20 words unless explaining something
-- After collecting all info, congratulate them warmly!
+
+EXAMPLE CONVERSATION STYLE:
+User: "Kalpit Das"
+❌ "Nice to meet you, Kalpit Das! I'm ready to help you build your resume..."
+✅ "Great! What's your phone number?"
+
+User: "10th pass"
+❌ "Being a 10th passout is great..."
+✅ "Perfect! Which school?"
+
+Remember: SHORT responses only! No summaries, no long explanations!
 
 EXAMPLE CONVERSATION STYLE:
 ❌ "Please provide your complete residential address including street number, locality, city, and pin code"
@@ -151,38 +165,44 @@ export const generateAIResponse = async (messages, language = 'en', userData = {
             messages: conversationHistory,
             model: 'llama-3.1-8b-instant', // Fast and free!
             temperature: 0.7,
-            max_tokens: 150, // Keep responses concise
+            max_tokens: 50, // Force SHORT responses - no long summaries!
             top_p: 1,
             stream: false
         });
 
         const response = completion.choices[0]?.message?.content || '';
 
-        // Extract structured data by asking AI
+        // Extract structured data by asking AI - use FULL conversation for context
         let extractedData = {};
         try {
-            const lastUserMessage = conversationHistory[conversationHistory.length - 1]?.content || '';
+            // Build conversation context for extraction
+            const conversationContext = conversationHistory
+                .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+                .map(msg => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
+                .join('\n');
 
-            const extractPrompt = `From this user message, extract ONLY the data in JSON format. Return {} if nothing found.
-User said: "${lastUserMessage}"
+            const extractPrompt = `From this conversation, extract the user's resume data in JSON format. Return {} if nothing found yet.
 
-Extract if mentioned:
+Conversation:
+${conversationContext}
+
+Extract ONLY what the user has provided:
 {
-  "name": "full name only",
-  "phone": "phone number",
-  "email": "email",
-  "trade": "job/profession",
-  "skills": ["skill1", "skill2"] if list detected,
-  "address": "location"
+  "name": "full name if mentioned",
+  "phone": "phone number if mentioned",
+  "email": "email if mentioned",
+  "trade": "job/profession if mentioned",
+  "skills": ["skill1", "skill2"] if mentioned,
+  "address": "location if mentioned"
 }
 
-Return ONLY the JSON object, nothing else.`;
+Return ONLY the JSON object with the fields that were mentioned. Omit fields not mentioned yet.`;
 
             const extractCall = await groq.chat.completions.create({
                 messages: [{ role: 'user', content: extractPrompt }],
                 model: 'llama-3.1-8b-instant',
                 temperature: 0.1,
-                max_tokens: 150,
+                max_tokens: 200,
             });
 
             const extractText = extractCall.choices[0]?.message?.content || '{}';
