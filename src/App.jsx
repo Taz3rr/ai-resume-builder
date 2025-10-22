@@ -64,13 +64,6 @@ function App() {
                                 <option value="en">English</option>
                                 <option value="hi">हिंदी (Hindi)</option>
                                 <option value="or">ଓଡ଼ିଆ (Odia)</option>
-                                <option value="mr">मराठी (Marathi)</option>
-                                <option value="ta">தமிழ் (Tamil)</option>
-                                <option value="te">తెలుగు (Telugu)</option>
-                                <option value="bn">বাংলা (Bengali)</option>
-                                <option value="gu">ગુજરાતી (Gujarati)</option>
-                                <option value="kn">ಕನ್ನಡ (Kannada)</option>
-                                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
                             </select>
                             <svg className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-indigo-600 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

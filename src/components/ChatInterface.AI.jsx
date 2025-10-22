@@ -173,7 +173,6 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
             // Use AI extracted data
             if (result.extractedData && Object.keys(result.extractedData).length > 0) {
                 console.log('✅ Using AI extracted data:', result.extractedData);
-                alert(`AI found: ${JSON.stringify(result.extractedData)}`);
 
                 setResumeData(prev => {
                     const updated = {
