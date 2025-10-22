@@ -12,6 +12,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
     const [speakingMessageId, setSpeakingMessageId] = useState(null);
     const [isAIMode, setIsAIMode] = useState(true); // Try AI first
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isConversationComplete, setIsConversationComplete] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editField, setEditField] = useState(null);
     const [editValue, setEditValue] = useState('');
@@ -196,22 +197,22 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     if (result.extractedData.address) {
                         updated.personalInfo.address = result.extractedData.address;
                     }
-                    
+
                     // Update skills (array)
                     if (result.extractedData.skills) {
                         updated.skills = result.extractedData.skills;
                     }
-                    
+
                     // Update experience (flexible text)
                     if (result.extractedData.experience) {
                         updated.experience = [{ description: result.extractedData.experience }];
                     }
-                    
+
                     // Update education (flexible text - can be 10th, BTech, anything!)
                     if (result.extractedData.education) {
                         updated.education = [{ description: result.extractedData.education }];
                     }
-                    
+
                     // Update certifications (flexible text)
                     if (result.extractedData.certifications) {
                         updated.certifications = [{ description: result.extractedData.certifications }];
@@ -236,6 +237,7 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
 
             // Check if complete
             if (result.isComplete) {
+                setIsConversationComplete(true);
                 onShowPreview();
             }
         }
@@ -663,13 +665,13 @@ const ChatInterface = ({ language, resumeData, setResumeData, onShowPreview }) =
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder={isProcessing ? 'Please wait...' : t.typeHere}
-                    disabled={isProcessing}
+                    placeholder={isConversationComplete ? 'Conversation complete' : (isProcessing ? 'Please wait...' : t.typeHere)}
+                    disabled={isProcessing || isConversationComplete}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-100"
                 />
                 <button
                     onClick={handleSend}
-                    disabled={isProcessing}
+                    disabled={isProcessing || isConversationComplete}
                     className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:bg-gray-400"
                 >
                     {t.send}

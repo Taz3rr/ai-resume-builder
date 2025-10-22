@@ -219,18 +219,16 @@ const ResumePreview = ({ language, resumeData, showPreview }) => {
                     )}
 
                     {/* Certifications */}
-                    {certifications && certifications.length > 0 && (
+                    {certifications && certifications.length > 0 && certifications[0].description && (
                         <div className="mb-6">
                             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase border-b-2 border-gray-300 pb-1">
                                 Certifications & Licenses
                             </h2>
-                            <ul className="list-disc list-inside space-y-2">
-                                {certifications.map((cert, idx) => (
-                                    <li key={idx} className="text-gray-700">
-                                        {cert}
-                                    </li>
-                                ))}
-                            </ul>
+                            {certifications.map((cert, idx) => (
+                                <div key={idx} className="mb-3">
+                                    <p className="text-gray-700 leading-relaxed">{cert.description}</p>
+                                </div>
+                            ))}
                         </div>
                     )}
 
